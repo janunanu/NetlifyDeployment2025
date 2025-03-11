@@ -3,10 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Project 1</title>
+    <link rel="stylesheet" href="project1.css">
 </head>
 <body>
-    <h1>Project 1</h1>
+    <div class="image-container" >
+        <img src="15500256.jpg" width="800" height="600" alt="Pill on tongue" id="mouth" onclick="showForm()">
+        <h1 id="name">Dose</h1>
+    </div>
+    <div id="myMeds">
+        <div class="title">
+        <h2>My Prescriptions</h2>
+        <button type="button" class="close-button" onclick="close2()">x</button></div>
+        <form id="form2" onsubmit="return validateForm(event)">
+            <p>Medicine: 
+                <input id="newInfo1" type="text" name="medicine">
+            </p>
+            <p>Number of pills: 
+                <input id="newInfo2" type="text" name="pills">
+                <br><span id="feedback"></span><br/>
+            </p>
+            <p>Additional info: </p>
+            <textarea id="newInfo3" name="additionalInfo">Before or after meal etc.</textarea><br>
+            <button type="submit">Submit</button>
+            
+        </form>
+
+    </div>
+    <div id="todaysMeds">
+    <div class="title"><h2>Today's Dose</h2>
+    <button type="button" class="close-button" onclick="close()">x</button></div>
+    <form>
+    <p >Date: <input type="text" id="date" onClick="getCurrentDate()"></p> 
+    <p>Add more medicine or modify the list <button type="button" id="here" onclick="addMeds()">here</button></span></p>
+    </form>
+    <form id="medicinesListForm">
+        <!-- Medicines will be inserted dynamically here -->
+    </form>
+    <form action="#">
+        <label><input onchange="calculateTotal()" type="checkbox" id="med1" name="med1" value="Med1">Medicine 1, 2 pills<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med1')">x</button></label><br>
+        <label><input onchange="calculateTotal()" type="checkbox" id="med2" name="med2" value="Med2">Medicine 2, 1 pill, with a meal<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med2')">x</button></label><br>
+        <label><input onchange="calculateTotal()" type="checkbox" id="med3" name="med3" value="Med3">Medicine 3, 1 pill<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med3')">x</button></label><br>
+        <label><input onchange="calculateTotal()" type="checkbox" id="med4" name="med4" value="Med4">Medicine 4, 3 pills<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med4')">x</button></label><br>
+        <label><input onchange="calculateTotal()" type="checkbox" id="med5" name="med5" value="Med5">Medicine 5, 1 pill<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med5')">x</button></label><br>
+        <label><input onchange="calculateTotal()" type="checkbox" id="med6" name="med6" value="Med6">Medicine 6, 2 pills<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med6')">x</button></label><br>
+
+    </form>
+    <div class="result" >
+        <p>Total: <span id="checkedCount">0</span></p>
+        <p>Not taken: <span id="uncheckedCount">0</span></p> </p>
+
+    </div>
+
+    <div class="total">
+        <p>Today's total: <span id="dayTotal" >0</span> </p>
+        <p>You forgot to take <span id="dayTotalForgotten">0</span> medicine today.</p>
+    </div>
+    </div>
+    
+
+    </div>
+   
+
+    <script>
+        function calculateTotal(){
+        var checkboxes = document.getElementsByTagName("input");
+
+        
+        var checked=0;
+        var unchecked=0;
+
+        for(var i=0;i<checkboxes.length;i++){
+
+            if (checkboxes[i].type === "checkbox"){
+                if (checkboxes[i].checked){
+                    checked++;
+
+                    var label = checkboxes[i].closest('label');  // Get the associated label
+                    label.style.textDecoration = 'line-through';
+
+                }else {
+                    unchecked++;
+
+                    var label = checkboxes[i].closest('label');  // Get the associated label
+                    label.style.textDecoration = 'none';
+                }
+            
+        }
+    }
+        document.getElementById("checkedCount").textContent=checked;
+        document.getElementById("uncheckedCount").textContent=unchecked;
+
+
+        document.getElementById("dayTotal").textContent= checked;
+        
+        document.getElementById("dayTotalForgotten").textContent=unchecked;
+
+        if (unchecked==0){
+            alert("Well done! You have remembered to take all your meds today! Keep up the good work!")
+        }
+        }
+
+        function showForm(){
+            var form = document.getElementById("todaysMeds");
+            form.style.display= "block";
+
+            
+        }
+        
+        function close() {
+            var form = document.getElementById("todaysMeds");
+        
+                form.style.display = "none";  // Hide the form
+            
+        }
+    
+
+        function addMeds(){
+            var form2 = document.getElementById("myMeds");
+            form2.style.display = "block";  
+            
+        } 
+        function close2(){
+            var form2 = document.getElementById("myMeds");
+            form2.style.display="none";
+        }
+        
+       
+        function getCurrentDate(){
+            document.getElementById("date").value = new Date().toLocaleDateString();
+
+        
+            
+        }
+
+        function validateForm(event) {
+        event.preventDefault(); // Prevent form from submitting the usual way
+
+        const medicine = document.getElementById("newInfo1").value;  // Get the medicine name
+        const pills = document.getElementById("newInfo2").value;     // Get the number of pills
+        const additionalInfo = document.getElementById("newInfo3").value; // Get additional info
+
+        const feedback = document.getElementById('feedback');
+        const pillField = document.getElementById("newInfo2");
+
+        // Validate that the number of pills is entered and greater than 0
+        if (pills == "" || isNaN(pills) || parseInt(pills) <= 0) {
+            pillField.style.background = "pink"; // Highlight the input field with an error
+            feedback.innerHTML = "You need to enter a valid number of pills greater than 0"; // Show feedback
+            pillField.focus(); // Focus on the input field
+            return false; // Prevent form submission
+        } else {
+            pillField.style.background = ""; // Reset the background if the input is valid
+            feedback.innerHTML = ""; // Clear feedback message
+        }
+
+        // Check if medicine name is provided
+        if (medicine === "") {
+            feedback.innerHTML = "Both Medicine and Number of Pills are required!";
+            return false; // Stop the form from being saved
+        }
+
+        // Prepare the data to store
+        const newMedicineInfo = {
+            medicine: medicine,
+            pills: pills,
+            additionalInfo: additionalInfo
+        };
+
+        // Get existing data from localStorage or create an empty array if not available
+        const existingMeds = JSON.parse(localStorage.getItem('medicines')) || [];
+
+        // Add the new medicine entry to the array
+        existingMeds.push(newMedicineInfo);
+
+        // Save the updated list back to localStorage
+        localStorage.setItem('medicines', JSON.stringify(existingMeds));
+
+        // Clear the form fields after submission
+        document.getElementById("form2").reset();
+
+        // Reload the medicines in the 'todaysMeds' section
+        loadMedicines();
+
+        // Optionally close the form or display a success message
+        alert('Medicine added successfully!');
+    }
+        function loadMedicines() {
+        // Retrieve medicines from localStorage
+        const medicines = JSON.parse(localStorage.getItem('medicines')) || [];
+        
+        // Get the container where medicines will be displayed
+        const medsContainer = document.getElementById('medicinesListForm');  // Ensure this element exists in your HTML
+
+        // Clear previous contents
+        medsContainer.innerHTML = '';
+
+        // Loop through each medicine and display it
+        medicines.forEach((med, index) => {
+            const medItem = document.createElement('label');
+            medItem.classList.add('medicine-item'); // Optional: Add a class for styling
+            medItem.innerHTML = `
+                <input onchange="calculateTotal()" type="checkbox" id="med${index}" name="med${index}" value="${med.medicine}">
+                ${med.medicine}, ${med.pills} pill(s)
+                <button type="button" style="background-color: papayawhip; border:none" onclick="removeMedicine(${index})">x</button>
+            `;
+            medsContainer.appendChild(medItem);
+        });
+    }
+
+    // Function to remove a medicine from localStorage
+        function removeMedicine(index) {
+        // Retrieve medicines from localStorage
+        const medicines = JSON.parse(localStorage.getItem('medicines')) || [];
+
+        // Remove the medicine at the specified index
+        medicines.splice(index, 1);
+
+        // Update localStorage with the modified list
+        localStorage.setItem('medicines', JSON.stringify(medicines));
+
+        // Reload the medicines list
+        loadMedicines();
+    }
+
+    // Ensure the medicines list is loaded when the page is ready
+        window.onload = function() {
+        loadMedicines();
+    };
+
+
+
+        function removeTask(taskId) {
+            var taskElement = document.getElementById(taskId).closest('label'); // Get the label element
+            taskElement.remove(); // Remove the label and input from the DOM
+        }
+
+    
+
+
+    </script>
+
+
+
+
+
+    <div class="repeat">
+        <h3>Remember to take your medicine</h3>
+        <h3>Remember to take your medicine</h3>
+        <h3>Remember to take your medicine</h3>
+        <h3>Remember to take your medicine</h3>
+        <h3>Remember to take your medicine</h3>
+        
+
+    </div>
+        
     <p></p>
     
 </body>
