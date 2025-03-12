@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="project1.css">
 </head>
 <body>
-    <div class="image-container" >
+    <div class="image-container" > 
         <img src="15500256.jpg" width="800" height="600" alt="Pill on tongue" id="mouth" onclick="showForm()">
         <h1 id="name">Dose</h1>
     </div>
@@ -15,7 +15,7 @@
         <div class="title">
         <h2>My Prescriptions</h2>
         <button type="button" class="close-button" onclick="close2()">x</button></div>
-        <form id="form2" onsubmit="return validateForm(event)">
+        <form id="form2" onsubmit="return validateForm(event)"> 
             <p>Medicine: 
                 <input id="newInfo1" type="text" name="medicine">
             </p>
@@ -38,7 +38,7 @@
     <p>Add more medicine or modify the list <button type="button" id="here" onclick="addMeds()">here</button></span></p>
     </form>
     <form id="medicinesListForm">
-        <!-- Medicines will be inserted dynamically here -->
+        <!-- Medicines will be inserted here -->
     </form>
     <form action="#">
         <label><input onchange="calculateTotal()" type="checkbox" id="med1" name="med1" value="Med1">Medicine 1, 2 pills<button type="button" style="background-color: papayawhip; border:none" onclick="removeTask('med1')">x</button></label><br>
@@ -79,13 +79,13 @@
                 if (checkboxes[i].checked){
                     checked++;
 
-                    var label = checkboxes[i].closest('label');  // Get the associated label
+                    var label = checkboxes[i].closest('label');  // Get the right label
                     label.style.textDecoration = 'line-through';
 
                 }else {
                     unchecked++;
 
-                    var label = checkboxes[i].closest('label');  // Get the associated label
+                    var label = checkboxes[i].closest('label');  // Get the right label
                     label.style.textDecoration = 'none';
                 }
             
